@@ -1,0 +1,20 @@
+@import "~styles/utils";
+
+.header {
+  height: 5rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: $oc-violet-7;
+  color: white;
+
+  .logo {
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+  }
+}

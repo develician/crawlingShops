@@ -1,0 +1,48 @@
+@import "~styles/utils.scss";
+
+.newsIcon + .newsIcon {
+  margin-top: 1rem;
+}
+
+.newsIcon {
+  display: flex;
+  padding: 1rem;
+  @include media("<=medium") {
+    flex-direction: column;
+  }
+
+  border: 1px solid $oc-gray-4;
+  border-radius: 3px;
+
+  .newsIconThumbnail {
+    margin-right: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include media("<=medium") {
+      margin-right: 0rem;
+    }
+    img {
+      margin: 0 auto;
+      @include media("<=medium") {
+        flex: 1;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .newsIconInfos {
+    line-height: 2rem;
+    display: flex;
+    flex-direction: column;
+    .newsIconTitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .newsIconSubInfo {
+      display: flex;
+    }
+  }
+}

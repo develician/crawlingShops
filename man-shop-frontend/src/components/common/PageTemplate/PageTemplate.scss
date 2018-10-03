@@ -1,0 +1,10 @@
+@import "~styles/utils";
+
+.wrapper {
+  background: $oc-gray-0;
+
+  min-height: calc(100vh);
+
+  display: flex;
+  flex-direction: column;
+}

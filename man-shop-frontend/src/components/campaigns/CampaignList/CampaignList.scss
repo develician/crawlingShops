@@ -1,0 +1,17 @@
+@import "~styles/utils";
+
+.campaignListWrapper {
+  position: relative;
+  //   margin: 0 auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  //   width: 100%;
+
+  @include media("<=medium") {
+    // margin: 0 auto;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+  }
+}

@@ -1,0 +1,21 @@
+@import "~styles/utils";
+
+.menuBar {
+  height: 3rem;
+  background: $oc-violet-8;
+  overflow-x: auto;
+
+  font-size: 1.25rem;
+  font-weight: 700;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  .menuItem + .menuItem {
+    margin-left: 1rem;
+  }
+}

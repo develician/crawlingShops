@@ -1,0 +1,32 @@
+@import "~styles/utils";
+
+.itemsIcon {
+  padding: 1rem;
+  width: 240px;
+  height: 400px;
+  .itemsIconThumbnail {
+    img {
+    }
+  }
+
+  .itemsIconTitle {
+    // max-width: 100%;
+    margin-top: 0.75rem;
+    font-weight: 700;
+  }
+
+  .itemsIconNormalPriceThrough {
+    text-decoration: line-through;
+  }
+  .itemsIconDiscountPrice {
+    color: $oc-blue-8;
+  }
+  .itemsIconDiscountPercent {
+    color: $oc-red-8;
+    text-align: right;
+  }
+}
+
+.itemsIcon + .itemsIcon {
+  //   padding: 1rem;
+}

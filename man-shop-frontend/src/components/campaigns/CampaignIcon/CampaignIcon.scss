@@ -1,0 +1,18 @@
+@import "~styles/utils";
+
+.campaignIcon {
+  width: calc((100% - 32px) / 3);
+  height: 400px;
+  margin-bottom: 1rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @include media("<=medium") {
+    width: calc(100vw - 2rem);
+    // height: 300px;
+    // margin-bottom: 1rem;
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}

@@ -1,0 +1,14 @@
+appdirs==1.4.3
+attrs==18.2.0
+beautifulsoup4==4.6.3
+black==18.9b0
+certifi==2018.8.24
+chardet==3.0.4
+Click==7.0
+Django==2.1.2
+djangorestframework==3.8.2
+idna==2.7
+pytz==2018.5
+requests==2.19.1
+toml==0.9.6
+urllib3==1.23
