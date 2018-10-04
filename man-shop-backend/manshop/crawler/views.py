@@ -76,6 +76,16 @@ def getMusinsaCampaigns():
 
 
 def getMusinsaItems(url):
+    page = None
+    if "page=" in url:
+        print("url checking", url)
+        # print(url.split("page=")[0])
+        # print(url.split("page=")[1])
+        divider = "page="
+        page = url.split(divider)[1].split("&")[0]
+        print("page = ", page)
+    else:
+        page = 1
     musinsa_html = bs(requests.get(url).text, "html.parser")
     title_page = musinsa_html.find("div", {"class": "title-page"})
     title = str.strip(title_page.text)
@@ -107,17 +117,24 @@ def getMusinsaItems(url):
         my_item["sub_title"] = item_sub_title
 
         price = item_info.find("div", {"class": "price"})
-        
-        if price.find('div', {'class': 'normal_price'}).find('del') != None:
-            my_item['normal_price'] = price.find('div', {'class': 'normal_price'}).find('del').text
-            my_item['discounted_price'] = str.strip(price.find('div', {'class': 'normal_price'}).text)
-            my_item['discount_percent'] = price.find("div", {"class": "discount_price"}).find("span").text
-        else:
-            my_item['normal_price'] = str.strip(price.find('div', {'class': 'normal_price'}).text)
 
+        if price.find("div", {"class": "normal_price"}).find("del") != None:
+            my_item["normal_price"] = (
+                price.find("div", {"class": "normal_price"}).find("del").text
+            )
+            my_item["discounted_price"] = str.strip(
+                price.find("div", {"class": "normal_price"}).text
+            )
+            my_item["discount_percent"] = (
+                price.find("div", {"class": "discount_price"}).find("span").text
+            )
+        else:
+            my_item["normal_price"] = str.strip(
+                price.find("div", {"class": "normal_price"}).text
+            )
 
         items.append(my_item)
-    return items
+    return {"items": items, "page": page, "title": title}
 
 
 class MusinsaView(APIView):
@@ -129,6 +146,22 @@ class MusinsaView(APIView):
 
 class MusinsaDetail(APIView):
     def get(self, request, *args, **kwargs):
-        url = request.GET["url"]
-        items = getMusinsaItems(url)
-        return Response({"items": items})
+        query_params = request.GET
+        divider = "&"
+        url = ""
+        for key in query_params:
+            # print(query_params[key])
+            if key == "url":
+                url += query_params[key] + divider
+            else:
+                url += key + "=" + query_params[key] + divider
+        # url = request.GET["url"]
+        musinsaItemsResult = getMusinsaItems(url)
+        return Response(
+            {
+                "items": musinsaItemsResult["items"],
+                "page": musinsaItemsResult["page"],
+                "title": musinsaItemsResult["title"],
+            }
+        )
+        # return Response({"items": [], "page": 1})
