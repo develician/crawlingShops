@@ -8,8 +8,8 @@ const cx = classNames.bind(styles);
 
 const MenuItems = shops.map((shop, i) => {
   return (
-    <Link key={shop} to={`/${shop}`} className={cx("menuItem")}>
-      {shop}
+    <Link key={shop.name} to={`/${shop.name}`} className={cx("menuItem")}>
+      {shop.name}
     </Link>
   );
 });

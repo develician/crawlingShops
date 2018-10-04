@@ -8,49 +8,54 @@ from rest_framework.response import Response
 # Create your views here.
 
 
-def getMusinsaNews():
-    musinsa_html = bs(requests.get("https://www.musinsa.com/").text, "html.parser")
-    musinsa_news = musinsa_html.find(
-        "div", {"class": "content-wrapper wrapper tab news"}
-    )
-    musinsa_news_article_list = musinsa_news.find_all("li", {"class": "listItem"})
+def getMusinsaNews(url):
+    musinsa_html = bs(requests.get(url).text, "html.parser")
+    main_content = musinsa_html.find("div", {"class": "main-content"})
+    news_wrapper = main_content.find("div", {"class": "content-wrapper news"})
+    news_section = news_wrapper.find("div", {"class": "section"})
+    news_ul = news_section.find("ul")
+    list_items = news_ul.find_all("li", {"class": "listItem"})
     articles = []
-    for article in musinsa_news_article_list:
-        news_article = {}
-        data_original = (
-            "https:"
-            + (
-                article.find("div", {"class": "articleImg"})
-                .find("a")
-                .find("img")
-                .get("data-original")
-            ).split(".0")[0]
+    for item in list_items:
+        article = {}
+        article_img = (
+            item.find("div", {"class": "articleImg"}).find("a").find("img").get("src")
         )
-        news_article["articleImg"] = data_original
-        article_info = article.find("div", {"class": "articleInfo info"})
-        news_article["title"] = str.strip(
-            article_info.find("a").find("p", {"class": "title"}).text
+        article["imgSrc"] = "https:" + article_img.split(".0")[0]
+        article_info = item.find("div", {"class": "articleInfo info"})
+        article["title"] = str.strip(
+            article_info.find("p", {"class": "title"}).find("a").text
         )
-        news_article["date"] = article_info.find(
-            "span", {"class": "date division"}
-        ).text
-        news_article["viewCnt"] = (
-            article_info.find("span", {"class": "view"})
+        article["href"] = (
+            article_info.find("p", {"class": "title"}).find("a").get("href")
+        )
+        article["date"] = (
+            article_info.find("div", {"class": "info"})
+            .find("span", {"class": "date division"})
+            .text
+        )
+        article["viewCnt"] = (
+            article_info.find("div", {"class": "info"})
+            .find("span", {"class": "view"})
             .find("span", {"class": "viewCnt"})
             .text
         )
-        news_article["brandTitle"] = (
-            article_info.find("span", {"class": "getBrandTitle"})
-            .find("b")
+        brandName = article_info.find("div", {"class": "info"}).find("b", {"class": "rev-division"})
+        
+        if brandName != None:
+            article["brandName"] = (
+            article_info.find("div", {"class": "info"})
+            .find("b", {"class": "rev-division"})
             .find("a")
-            .find("span", {"class": "brand"})
+            .find("span")
             .text
         )
-        news_article["description"] = str.strip(
+
+        
+        article["description"] = (
             article_info.find("div", {"class": "description"}).find("a").find("p").text
         )
-        news_article["href"] = article_info.find("a").get("href")
-        articles.append(news_article)
+        articles.append(article)
     return articles
 
 
@@ -139,9 +144,22 @@ def getMusinsaItems(url):
 
 class MusinsaView(APIView):
     def get(self, request, format=None):
-        articles = getMusinsaNews()
+        query_params = request.GET
+
+        url = ""
+        for key in query_params:
+            if key == "url":
+                url += query_params[key]
+            else:
+                url += "&" + key + "=" + query_params[key]
+
+        if int(query_params["p"]) > 1:
+            news_articles = getMusinsaNews(url)
+            return Response({"news_articles": news_articles})
+
+        news_articles = getMusinsaNews(url)
         campaigns = getMusinsaCampaigns()
-        return Response({"news_articles": articles, "campaigns": campaigns})
+        return Response({"news_articles": news_articles, "campaigns": campaigns})
 
 
 class MusinsaDetail(APIView):

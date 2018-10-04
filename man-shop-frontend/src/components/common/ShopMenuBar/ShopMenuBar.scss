@@ -1,0 +1,29 @@
+@import "~styles/utils";
+
+.shopMenuBarWrapper {
+  display: flex;
+  height: 3rem;
+  background: $oc-teal-5;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  .shopMenu {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      color: $oc-gray-2;
+    }
+  }
+
+  .selected {
+    color: $oc-gray-3;
+  }
+
+  .shopMenu + .shopMenu {
+    margin-left: 1rem;
+  }
+}

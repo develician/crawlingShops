@@ -10,12 +10,13 @@ const NewsList = ({ list }) => {
     return (
       <NewsIcon
         key={i}
-        articleImg={news.articleImg}
+        articleImg={news.imgSrc}
         title={news.title}
-        brandTitle={news.brandTitle}
+        brandTitle={news.brandName}
         date={news.date}
         description={news.description}
         href={news.href}
+        viewCnt={news.viewCnt}
       />
     );
   });
